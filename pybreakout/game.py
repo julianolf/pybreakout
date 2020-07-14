@@ -10,15 +10,23 @@ class Game:
         self.screen = pygame.display.set_mode(settings.WIN_SIZE)
         self.clock = pygame.time.Clock()
         self.sprites = pygame.sprite.Group()
-        self.walls = pygame.sprite.Group()
+        self.bricks = pygame.sprite.Group()
 
     def reset(self):
         self.sprites.empty()
-        self.walls.empty()
-        self.top_wall = sprites.TopWall((self.sprites, self.walls))
-        self.left_wall = sprites.LeftWall((self.sprites, self.walls))
-        self.right_wall = sprites.RightWall((self.sprites, self.walls))
+        self.bricks.empty()
+        self.wall = []
+        self.stack_bricks()
         self.running = True
+
+    def stack_bricks(self):
+        layers = (self.sprites, self.bricks)
+        for i in range(len(settings.BRICK_LINES)):
+            color = settings.BRICK_COLORS[i]
+            y = settings.BRICK_LINES[i]
+            for x in settings.BRICK_COLUMNS:
+                brick = sprites.Brick(color, (x, y), layers)
+                self.wall.append(brick)
 
     def update(self):
         self.sprites.update()
