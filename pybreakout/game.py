@@ -17,7 +17,9 @@ class Game:
         self.bricks.empty()
         self.wall = []
         self.stack_bricks()
-        self.paddle = sprites.Paddle((self.sprites))
+        self.paddle = sprites.Paddle((self.sprites,))
+        self.ball = sprites.Ball(self, (self.sprites,))
+        self.spare_balls = 2
         self.running = True
 
     def stack_bricks(self):
@@ -28,6 +30,13 @@ class Game:
             for x in settings.BRICK_COLUMNS:
                 brick = sprites.Brick(color, (x, y), layers)
                 self.wall.append(brick)
+
+    def out(self):
+        if self.spare_balls:
+            self.spare_balls -= 1
+            self.ball = sprites.Ball(self, (self.sprites,))
+        else:
+            self.running = False
 
     def update(self):
         self.sprites.update()

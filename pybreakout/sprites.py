@@ -1,3 +1,5 @@
+from random import randint
+
 import pygame
 
 from . import settings
@@ -47,3 +49,58 @@ class Paddle(pygame.sprite.Sprite):
             self.left()
         if keys[pygame.K_RIGHT]:
             self.right()
+
+
+class Ball(pygame.sprite.Sprite):
+    def __init__(self, game, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        image = pygame.Surface(settings.BALL_SIZE)
+        image.fill(settings.BLACK)
+        image.set_colorkey(settings.BLACK)
+        pygame.draw.circle(
+            image,
+            settings.WHITE,
+            (settings.BALL_RADIUS, settings.BALL_RADIUS),
+            settings.BALL_RADIUS,
+        )
+        self.image = image.convert()
+        self.rect = self.image.get_rect()
+        self.rect.center = (settings.WIDTH / 2, settings.HEIGHT / 2)
+        self.radius = settings.BALL_RADIUS
+        self.velocity = pygame.Vector2(randint(-8, 8), 5)
+        self.game = game
+
+    def update(self):
+        self.rect.centerx += self.velocity.x
+        self.rect.centery += self.velocity.y
+        if self.rect.left <= 0:
+            self.rect.left = 0
+            self.velocity.x *= -1
+        if self.rect.top <= 0:
+            self.rect.top = 0
+            self.velocity.y *= -1
+        if self.rect.right >= settings.WIDTH:
+            self.rect.right = settings.WIDTH
+            self.velocity.x *= -1
+        if self.rect.top >= settings.HEIGHT:
+            self.kill()
+            self.game.out()
+        self.hit()
+
+    def bounce(self):
+        self.velocity.y *= -1
+        self.velocity.x = randint(-8, 8)
+
+    def hit(self):
+        hits = pygame.sprite.spritecollide(
+            self,
+            self.game.sprites,
+            False,
+            pygame.sprite.collide_rect_ratio(0.85),
+        )
+        for sprite in hits:
+            if isinstance(sprite, Paddle):
+                self.bounce()
+            elif isinstance(sprite, Brick):
+                sprite.kill()
+                self.bounce()
