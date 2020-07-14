@@ -33,6 +33,9 @@ class Game:
                 brick = sprites.Brick(color, (x, y), layers)
                 self.wall.append(brick)
 
+    def breakout(self, color):
+        self.score += settings.POINTS.get(color, 0)
+
     def out(self):
         if self.spare_balls:
             self.spare_balls -= 1

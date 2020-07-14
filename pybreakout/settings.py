@@ -24,3 +24,4 @@ FONT = path.join(ASSETS_PATH, 'font', 'Teko-Regular.ttf')
 FONT_SIZE = 70
 TEXT_LEFT = (WIDTH * 0.1, 5)
 TEXT_CENTER = (WIDTH * 0.5 + 10, 5)
+POINTS = {YELLOW: 2, GREEN: 3, ORANGE: 5, RED: 7}
