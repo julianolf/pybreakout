@@ -17,6 +17,7 @@ class Game:
         self.bricks.empty()
         self.wall = []
         self.stack_bricks()
+        self.paddle = sprites.Paddle((self.sprites))
         self.running = True
 
     def stack_bricks(self):
