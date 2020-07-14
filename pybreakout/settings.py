@@ -1,3 +1,5 @@
+from os import path
+
 TITLE = 'PyBREAKOUT'
 WIDTH, HEIGHT = (600, 700)
 WIN_SIZE = (WIDTH, HEIGHT)
@@ -17,3 +19,8 @@ BRICK_COLUMNS = tuple(range(0, WIDTH, BRICK_W))
 PADDLE_SIZE = (80, 12)
 BALL_SIZE = (14, 14)
 BALL_RADIUS = 7
+ASSETS_PATH = path.join(path.dirname(__file__), 'assets')
+FONT = path.join(ASSETS_PATH, 'font', 'Teko-Regular.ttf')
+FONT_SIZE = 70
+TEXT_LEFT = (WIDTH * 0.1, 5)
+TEXT_CENTER = (WIDTH * 0.5 + 10, 5)

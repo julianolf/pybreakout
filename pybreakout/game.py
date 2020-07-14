@@ -11,6 +11,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.sprites = pygame.sprite.Group()
         self.bricks = pygame.sprite.Group()
+        self.font = pygame.font.Font(settings.FONT, settings.FONT_SIZE)
 
     def reset(self):
         self.sprites.empty()
@@ -20,6 +21,7 @@ class Game:
         self.paddle = sprites.Paddle((self.sprites,))
         self.ball = sprites.Ball(self, (self.sprites,))
         self.spare_balls = 2
+        self.score = 0
         self.running = True
 
     def stack_bricks(self):
@@ -44,7 +46,15 @@ class Game:
     def draw(self):
         self.screen.fill(settings.BLACK)
         self.sprites.draw(self.screen)
+        self.draw_text(f'{self.spare_balls:>02}', settings.TEXT_LEFT)
+        self.draw_text(f'{self.score:>03}', settings.TEXT_CENTER)
         pygame.display.flip()
+
+    def draw_text(self, text, position):
+        surface = self.font.render(text, True, settings.WHITE)
+        rect = surface.get_rect()
+        rect.topleft = position
+        self.screen.blit(surface, rect)
 
     def events(self):
         for event in pygame.event.get():
