@@ -20,6 +20,7 @@ PADDLE_SIZE = (80, 12)
 BALL_SIZE = (14, 14)
 BALL_RADIUS = 7
 ASSETS_PATH = path.join(path.dirname(__file__), 'assets')
+SFX = path.join(ASSETS_PATH, 'sfx')
 FONT = path.join(ASSETS_PATH, 'font', 'Teko-Regular.ttf')
 FONT_SIZE = 70
 TEXT_LEFT = (WIDTH * 0.1, 5)

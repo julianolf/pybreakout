@@ -1,3 +1,5 @@
+from os import path
+
 import pygame
 
 from . import settings, sprites
@@ -6,12 +8,17 @@ from . import settings, sprites
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
         pygame.display.set_caption(settings.TITLE)
         self.screen = pygame.display.set_mode(settings.WIN_SIZE)
         self.clock = pygame.time.Clock()
         self.sprites = pygame.sprite.Group()
         self.bricks = pygame.sprite.Group()
         self.font = pygame.font.Font(settings.FONT, settings.FONT_SIZE)
+        self.sfx = {
+            sound: pygame.mixer.Sound(path.join(settings.SFX, f'{sound}.wav'))
+            for sound in ('bounce', 'explosion', 'missed')
+        }
 
     def reset(self):
         self.sprites.empty()
@@ -35,6 +42,7 @@ class Game:
 
     def breakout(self, color):
         self.score += settings.POINTS.get(color, 0)
+        self.sfx['explosion'].play()
 
     def out(self):
         if self.spare_balls:
@@ -42,6 +50,7 @@ class Game:
             self.ball = sprites.Ball(self, (self.sprites,))
         else:
             self.running = False
+        self.sfx['missed'].play()
 
     def update(self):
         self.sprites.update()

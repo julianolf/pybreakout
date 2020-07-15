@@ -100,6 +100,7 @@ class Ball(pygame.sprite.Sprite):
         )
         for sprite in hits:
             if isinstance(sprite, Paddle):
+                self.game.sfx['bounce'].play()
                 self.bounce()
             elif isinstance(sprite, Brick):
                 sprite.kill()
