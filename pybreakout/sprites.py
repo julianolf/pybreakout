@@ -106,3 +106,31 @@ class Ball(pygame.sprite.Sprite):
                 sprite.kill()
                 self.game.breakout(sprite.color)
                 self.bounce()
+
+
+class Status(pygame.sprite.Sprite):
+    def __init__(self, spare_balls, score, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.reset_surface()
+        self.font = pygame.font.Font(settings.FONT, 70)
+        self.spare_balls = spare_balls
+        self.score = score
+
+    def reset_surface(self):
+        image = pygame.Surface((settings.WIDTH, 100))
+        image.fill(settings.BLACK)
+        image.set_colorkey(settings.BLACK)
+        self.image = image.convert()
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (0, 0)
+
+    def update(self):
+        self.reset_surface()
+        self.draw_text(f'{self.spare_balls:>02}', settings.TEXT_LEFT)
+        self.draw_text(f'{self.score:>03}', settings.TEXT_CENTER)
+
+    def draw_text(self, text, position):
+        surface = self.font.render(text, True, settings.WHITE)
+        rect = surface.get_rect()
+        rect.topleft = position
+        self.image.blit(surface, rect)

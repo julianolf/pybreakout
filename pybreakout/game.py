@@ -14,7 +14,6 @@ class Game:
         self.clock = pygame.time.Clock()
         self.sprites = pygame.sprite.Group()
         self.bricks = pygame.sprite.Group()
-        self.font = pygame.font.Font(settings.FONT, settings.FONT_SIZE)
         self.sfx = {
             sound: pygame.mixer.Sound(path.join(settings.SFX, f'{sound}.wav'))
             for sound in ('bounce', 'explosion', 'missed')
@@ -23,6 +22,7 @@ class Game:
     def reset(self):
         self.sprites.empty()
         self.bricks.empty()
+        self.status = sprites.Status(2, 0, (self.sprites,))
         self.wall = []
         self.stack_bricks()
         self.paddle = sprites.Paddle((self.sprites,))
@@ -42,11 +42,13 @@ class Game:
 
     def breakout(self, color):
         self.score += settings.POINTS.get(color, 0)
+        self.status.score = self.score
         self.sfx['explosion'].play()
 
     def out(self):
         if self.spare_balls:
             self.spare_balls -= 1
+            self.status.spare_balls = self.spare_balls
             self.ball = sprites.Ball(self, (self.sprites,))
         else:
             self.running = False
@@ -58,15 +60,7 @@ class Game:
     def draw(self):
         self.screen.fill(settings.BLACK)
         self.sprites.draw(self.screen)
-        self.draw_text(f'{self.spare_balls:>02}', settings.TEXT_LEFT)
-        self.draw_text(f'{self.score:>03}', settings.TEXT_CENTER)
         pygame.display.flip()
-
-    def draw_text(self, text, position):
-        surface = self.font.render(text, True, settings.WHITE)
-        rect = surface.get_rect()
-        rect.topleft = position
-        self.screen.blit(surface, rect)
 
     def events(self):
         for event in pygame.event.get():
