@@ -29,7 +29,17 @@ class Game:
         self.ball = sprites.Ball(self, (self.sprites,))
         self.spare_balls = 2
         self.score = 0
-        self.running = True
+        self.splash_screen = None
+
+    def start(self):
+        self.sprites.empty()
+        self.splash_screen = sprites.SplashScreen(
+            settings.TITLE, (self.sprites,)
+        )
+
+    def over(self):
+        self.sprites.empty()
+        self.splash_screen = sprites.SplashScreen('GAME OVER', (self.sprites,))
 
     def stack_bricks(self):
         layers = (self.sprites, self.bricks)
@@ -50,9 +60,9 @@ class Game:
             self.spare_balls -= 1
             self.status.spare_balls = self.spare_balls
             self.ball = sprites.Ball(self, (self.sprites,))
+            self.sfx['missed'].play()
         else:
-            self.running = False
-        self.sfx['missed'].play()
+            self.over()
 
     def update(self):
         self.sprites.update()
@@ -67,6 +77,10 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
                 return
+            if event.type == pygame.KEYDOWN:
+                if self.splash_screen:
+                    self.reset()
+                    return
 
     def loop(self):
         while self.running:
@@ -76,7 +90,8 @@ class Game:
             self.events()
 
     def run(self):
-        self.reset()
+        self.running = True
+        self.start()
         self.loop()
         pygame.quit()
 

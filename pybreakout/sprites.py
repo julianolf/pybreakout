@@ -134,3 +134,25 @@ class Status(pygame.sprite.Sprite):
         rect = surface.get_rect()
         rect.topleft = position
         self.image.blit(surface, rect)
+
+
+class SplashScreen(pygame.sprite.Sprite):
+    def __init__(self, text=settings.TITLE, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        image = pygame.Surface(settings.WIN_SIZE)
+        image.fill(settings.BLACK)
+        image.set_colorkey(settings.BLACK)
+        screen_center = (settings.WIDTH / 2, settings.HEIGHT / 2)
+        font_big = pygame.font.Font(settings.FONT, 80)
+        title = font_big.render(text, True, settings.WHITE)
+        title_rect = title.get_rect()
+        title_rect.midbottom = screen_center
+        font_small = pygame.font.Font(settings.FONT, 30)
+        hint = font_small.render('Press any key to play', True, settings.WHITE)
+        hint_rect = hint.get_rect()
+        hint_rect.midtop = screen_center
+        image.blit(title, title_rect)
+        image.blit(hint, hint_rect)
+        self.image = image.convert()
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (0, 0)
