@@ -16,7 +16,7 @@ class Game:
         self.bricks = pygame.sprite.Group()
         self.sfx = {
             sound: pygame.mixer.Sound(path.join(settings.SFX, f'{sound}.wav'))
-            for sound in ('bounce', 'explosion', 'missed')
+            for sound in ('bounce', 'explosion', 'launch')
         }
 
     def reset(self):
@@ -26,10 +26,10 @@ class Game:
         self.wall = []
         self.stack_bricks()
         self.paddle = sprites.Paddle((self.sprites,))
-        self.ball = sprites.Ball(self, (self.sprites,))
         self.spare_balls = 2
         self.score = 0
         self.splash_screen = None
+        self.launch()
 
     def start(self):
         self.sprites.empty()
@@ -55,12 +55,15 @@ class Game:
         self.status.score = self.score
         self.sfx['explosion'].play()
 
+    def launch(self):
+        self.ball = sprites.Ball(self, (self.sprites,))
+        self.sfx['launch'].play()
+
     def out(self):
         if self.spare_balls:
             self.spare_balls -= 1
             self.status.spare_balls = self.spare_balls
-            self.ball = sprites.Ball(self, (self.sprites,))
-            self.sfx['missed'].play()
+            self.launch()
         else:
             self.over()
 
