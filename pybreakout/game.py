@@ -50,10 +50,13 @@ class Game:
                 brick = sprites.Brick(color, (x, y), layers)
                 self.wall.append(brick)
 
-    def breakout(self, color):
-        self.score += settings.POINTS.get(color, 0)
+    def breakout(self, brick):
+        self.score += settings.POINTS.get(brick.color, 0)
         self.status.score = self.score
+        self.wall.remove(brick)
         self.sfx['explosion'].play()
+        if not self.wall:
+            self.level_up()
 
     def launch(self):
         self.ball = sprites.Ball(self, (self.sprites,))
@@ -66,6 +69,12 @@ class Game:
             self.launch()
         else:
             self.over()
+
+    def level_up(self):
+        self.sprites.remove((self.ball,))
+        self.ball.kill()
+        self.stack_bricks()
+        self.launch()
 
     def update(self):
         self.sprites.update()

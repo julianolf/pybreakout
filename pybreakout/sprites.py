@@ -104,7 +104,7 @@ class Ball(pygame.sprite.Sprite):
                 self.bounce()
             elif isinstance(sprite, Brick):
                 sprite.kill()
-                self.game.breakout(sprite.color)
+                self.game.breakout(sprite)
                 self.bounce()
 
 
