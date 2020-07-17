@@ -28,6 +28,7 @@ class Game:
         self.paddle = sprites.Paddle((self.sprites,))
         self.spare_balls = 2
         self.score = 0
+        self.speed = 5
         self.splash_screen = None
         self.launch()
 
@@ -59,7 +60,7 @@ class Game:
             self.level_up()
 
     def launch(self):
-        self.ball = sprites.Ball(self, (self.sprites,))
+        self.ball = sprites.Ball(self, self.speed, (self.sprites,))
         self.sfx['launch'].play()
 
     def out(self):
@@ -75,6 +76,7 @@ class Game:
         self.sprites.remove((self.ball,))
         self.ball.kill()
         self.stack_bricks()
+        self.speed += 2
         self.launch()
 
     def update(self):

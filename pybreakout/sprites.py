@@ -52,7 +52,7 @@ class Paddle(pygame.sprite.Sprite):
 
 
 class Ball(pygame.sprite.Sprite):
-    def __init__(self, game, *args, **kwargs):
+    def __init__(self, game, speed, *args, **kwargs):
         super().__init__(*args, **kwargs)
         image = pygame.Surface(settings.BALL_SIZE)
         image.fill(settings.BLACK)
@@ -67,7 +67,7 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (settings.WIDTH / 2, settings.HEIGHT / 2)
         self.radius = settings.BALL_RADIUS
-        self.velocity = pygame.Vector2(randint(-8, 8), 5)
+        self.velocity = pygame.Vector2(randint(-8, 8), speed)
         self.game = game
 
     def update(self):
