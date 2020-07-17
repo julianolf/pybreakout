@@ -16,7 +16,7 @@ class Game:
         self.bricks = pygame.sprite.Group()
         self.sfx = {
             sound: pygame.mixer.Sound(path.join(settings.SFX, f'{sound}.wav'))
-            for sound in ('bounce', 'explosion', 'launch')
+            for sound in ('bounce', 'explosion', 'launch', 'level')
         }
 
     def reset(self):
@@ -71,6 +71,7 @@ class Game:
             self.over()
 
     def level_up(self):
+        self.sfx['level'].play()
         self.sprites.remove((self.ball,))
         self.ball.kill()
         self.stack_bricks()
