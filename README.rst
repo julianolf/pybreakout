@@ -1,7 +1,11 @@
 PyBREAKOUT
-=======
+==========
 
 Yet another Breakout game written in Python.
+
+.. image:: https://raw.githubusercontent.com/julianolf/pybreakout/master/screenshot.png
+    :width: 640px
+    :alt: game play screenshot
 
 Requirements
 ------------
